@@ -104,11 +104,10 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
   display: none;
   position: absolute; top: 14px; left: 14px;
   width: 260px;
-  background: rgba(10,12,18,0.82);
-  border: 1px solid rgba(74,143,212,0.4);
+  background: var(--panel);
+  border: 1px solid rgba(74,143,212,0.5);
   border-radius: 8px;
   padding: 14px 14px 10px;
-  backdrop-filter: blur(6px);
   pointer-events: all;
   z-index: 20;
   overflow: hidden;
@@ -129,7 +128,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
   color: #4a8fd4; margin-bottom: 8px;
 }
 #manual-hint {
-  font-family: var(--mono); font-size: 8px; color: var(--muted);
+  font-family: var(--mono); font-size: 10px; color: var(--muted);
   margin-bottom: 10px; line-height: 1.6; letter-spacing: 0.5px;
 }
 #manual-item-select {
@@ -139,24 +138,24 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 #manual-item-select::-webkit-scrollbar { width: 3px; }
 #manual-item-select::-webkit-scrollbar-thumb { background: rgba(74,143,212,0.4); border-radius: 2px; }
 .manual-item-btn {
-  display: flex; align-items: center; gap: 8px; padding: 5px 8px;
-  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+  display: flex; align-items: center; gap: 8px; padding: 6px 8px;
+  background: var(--surface); border: 1px solid var(--border);
   border-radius: 3px; cursor: pointer; transition: all 0.15s;
 }
 .manual-item-btn:hover { border-color: #4a8fd4; }
-.manual-item-btn.active { border-color: #4a8fd4; background: rgba(74,143,212,0.18); }
+.manual-item-btn.active { border-color: #4a8fd4; background: rgba(74,143,212,0.15); }
 .manual-item-btn.depleted { opacity: 0.4; cursor: not-allowed; }
 .manual-item-dot { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
 .manual-item-name { font-family: var(--mono); font-size: 9px; color: var(--text); flex: 1; }
 .manual-item-remain { font-family: var(--mono); font-size: 9px; color: var(--accent); }
 .manual-orient-label {
-  font-size: 8px; color: var(--muted); font-family: var(--mono);
+  font-size: 10px; color: var(--muted); font-family: var(--mono);
   letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px;
 }
 #manual-orient-row { display: flex; gap: 5px; margin-bottom: 8px; flex-wrap: wrap; }
 .orient-btn {
-  font-family: var(--mono); font-size: 8px; padding: 3px 7px;
-  border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05);
+  font-family: var(--mono); font-size: 10px; padding: 4px 8px;
+  border: 1px solid var(--border2); background: var(--surface2);
   color: var(--muted); cursor: pointer; border-radius: 3px; transition: all 0.15s;
 }
 .orient-btn.active { border-color: #4a8fd4; color: #4a8fd4; background: rgba(74,143,212,0.15); }
@@ -305,6 +304,9 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 .manifest-qty { font-size: 10px; color: var(--accent); font-family: var(--mono); flex-shrink: 0; }
 .manifest-del { color: var(--muted); cursor: pointer; font-size: 13px; flex-shrink: 0; padding: 0 2px; line-height: 1; }
 .manifest-del:hover { color: var(--red); }
+.manifest-item { cursor: pointer; transition: border-color 0.15s; }
+.manifest-item:hover { border-color: var(--border2); }
+.manifest-item.editing { border-color: #4a8fd4; background: rgba(74,143,212,0.08); }
 .empty-msg { color: var(--muted); font-size: 10px; font-family: var(--mono); text-align: center; padding: 16px 0; }
 
 .form-row { display: flex; gap: 6px; margin-bottom: 7px; }
@@ -491,6 +493,15 @@ html.light #theme-toggle-thumb { left: 17px; }
             </div>
           </div>
           <div id="container-type-overlay"></div>
+          <div id="weight-tol-overlay" style="position:absolute;top:14px;right:14px;margin-top:90px;pointer-events:all;text-align:right;">
+            <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;text-shadow:0 1px 3px rgba(0,0,0,0.5);">Weight Tolerance</div>
+            <div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;">
+              <input type="number" id="weightTolerance" value="0" min="0" max="100" step="1"
+                style="width:64px;background:var(--surface2);border:1px solid var(--border2);color:var(--accent);font-family:var(--mono);font-size:13px;font-weight:700;padding:4px 8px;border-radius:4px;text-align:center;outline:none;">
+              <span style="font-family:var(--mono);font-size:10px;color:var(--muted);text-shadow:0 1px 3px rgba(0,0,0,0.5);">kg</span>
+            </div>
+            <div style="font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:4px;text-shadow:0 1px 3px rgba(0,0,0,0.5);">upper box excess over lower box</div>
+          </div>
           <div id="dev-overlay">
             <div>Developed by Komsan Kongsuwan</div>
             <div>komsan.kongsuwan@gmail.com</div>
@@ -511,7 +522,10 @@ html.light #theme-toggle-thumb { left: 17px; }
       </div>
 
       <div class="section">
-        <div class="section-title">Add Item</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+          <span class="section-title" id="form-section-title" style="margin-bottom:0;">Add Item</span>
+          <span id="form-edit-label" style="display:none;font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:1px;background:#4a8fd4;color:#fff;padding:2px 7px;border-radius:10px;">EDITING</span>
+        </div>
         <div class="form-row">
           <div class="form-field" style="flex:2">
             <label>Name</label>
@@ -536,7 +550,8 @@ html.light #theme-toggle-thumb { left: 17px; }
           <span class="upright-label" id="uprightLabel">Upright only (no flipping)</span>
         </div>
         <div class="btn-row">
-          <button class="btn" style="background:#2e7d52;color:#fff;" onclick="addItem()">+ Add to Manifest</button>
+          <button class="btn" id="btn-add-item" style="background:#2e7d52;color:#fff;" onclick="addItem()">+ Add to Manifest</button>
+          <button class="btn danger" id="btn-cancel-edit" style="display:none;" onclick="cancelEdit()">✕ Cancel</button>
         </div>
       </div>
 
@@ -1126,11 +1141,23 @@ function packAll() {
            az < bz+bh-0.001 && az+ah > bz+0.001;
   }
 
-  function canPlace(x,y,z,ol,ow,oh) {
+  function canPlace(x,y,z,ol,ow,oh,itemWeight) {
     if (x < -0.001 || y < -0.001 || z < -0.001) return false;
     if (x+ol > c.L+0.001 || y+ow > c.W+0.001 || z+oh > c.H+0.001) return false;
     for (const b of packedBoxes)
       if (overlaps(x,y,z,ol,ow,oh, b.x,b.y,b.z,b.l,b.w,b.h)) return false;
+    if (z > 0.001 && itemWeight !== undefined) {
+      const tolerance = getWeightTolerance();
+      const supporters = packedBoxes.filter(b =>
+        Math.abs((b.z + b.h) - z) < 0.1 &&
+        b.x < x+ol-0.001 && b.x+b.l > x+0.001 &&
+        b.y < y+ow-0.001 && b.y+b.w > y+0.001
+      );
+      if (supporters.length > 0) {
+        const minSupportWeight = Math.min(...supporters.map(b => b.item.weight));
+        if (itemWeight > minSupportWeight + tolerance) return false;
+      }
+    }
     return true;
   }
 
@@ -1165,7 +1192,7 @@ function packAll() {
       for (const y of ys) {
         for (const [ol,ow,oh] of orients) {
           const z = dropZ(x, y, ol, ow);
-          if (!canPlace(x, y, z, ol, ow, oh)) continue;
+          if (!canPlace(x, y, z, ol, ow, oh, it.weight)) continue;
           // Priority: lowest Z (no gaps) → back-most X → side-most Y
           if (!bestPos ||
               z < bestPos.z ||
@@ -1213,6 +1240,16 @@ function updateContainerTypeOverlay() {
     <div class="ct-name">${c.label}</div>
     <div class="ct-dims">${c.L} × ${c.W} × ${c.H} cm &nbsp;·&nbsp; ${c.maxKg.toLocaleString()} kg</div>
   `;
+  requestAnimationFrame(() => {
+    const typeOverlay = document.getElementById('container-type-overlay');
+    const wtOverlay   = document.getElementById('weight-tol-overlay');
+    if (typeOverlay && wtOverlay) {
+      const bottom = typeOverlay.getBoundingClientRect().bottom;
+      const vpTop  = document.getElementById('viewport').getBoundingClientRect().top;
+      wtOverlay.style.top       = (bottom - vpTop + 10) + 'px';
+      wtOverlay.style.marginTop = '0';
+    }
+  });
 }
 
 function changeContainer(key) {
@@ -1248,6 +1285,38 @@ function removeContainer(key) {
   else renderContainerList();
 }
 
+let editingItemId = null;
+
+function selectItemForEdit(id) {
+  const it = cargoItems.find(i => i.id === id);
+  if (!it) return;
+  editingItemId = id;
+  document.getElementById('inName').value = it.name;
+  document.getElementById('inL').value = it.l;
+  document.getElementById('inW').value = it.w;
+  document.getElementById('inH').value = it.h;
+  document.getElementById('inWt').value = it.weight;
+  document.getElementById('inQty').value = it.qty;
+  document.getElementById('inColor').value = it.color;
+  setUprightInput(it.upright);
+  document.getElementById('form-section-title').textContent = 'Edit Item';
+  document.getElementById('form-edit-label').style.display = '';
+  document.getElementById('btn-add-item').textContent = '✔ Update Item';
+  document.getElementById('btn-add-item').style.background = '#4a8fd4';
+  document.getElementById('btn-cancel-edit').style.display = '';
+  renderManifest();
+}
+
+function cancelEdit() {
+  editingItemId = null;
+  document.getElementById('form-section-title').textContent = 'Add Item';
+  document.getElementById('form-edit-label').style.display = 'none';
+  document.getElementById('btn-add-item').textContent = '+ Add to Manifest';
+  document.getElementById('btn-add-item').style.background = '#2e7d52';
+  document.getElementById('btn-cancel-edit').style.display = 'none';
+  renderManifest();
+}
+
 function addItem() {
   const name = document.getElementById('inName').value.trim() || 'Box';
   const l = Math.max(1, parseInt(document.getElementById('inL').value)||60);
@@ -1257,9 +1326,17 @@ function addItem() {
   const qty = Math.max(1, parseInt(document.getElementById('inQty').value)||1);
   const color = document.getElementById('inColor').value;
   const upright = uprightInput;
-  cargoItems.push({ id:++itemId, name, l, w, h, weight, qty, color, upright });
-  palIdx++;
-  document.getElementById('inColor').value = PALETTE[palIdx % PALETTE.length];
+
+  if (editingItemId !== null) {
+    const idx = cargoItems.findIndex(i => i.id === editingItemId);
+    if (idx !== -1) cargoItems[idx] = { ...cargoItems[idx], name, l, w, h, weight, qty, color, upright };
+    cancelEdit();
+  } else {
+    cargoItems.push({ id:++itemId, name, l, w, h, weight, qty, color, upright });
+    palIdx++;
+    document.getElementById('inColor').value = PALETTE[palIdx % PALETTE.length];
+  }
+
   packedBoxes = [];
   while (boxGroup.children.length) boxGroup.remove(boxGroup.children[0]);
   renderManifest();
@@ -1268,6 +1345,7 @@ function addItem() {
 }
 
 function removeItem(id) {
+  if (editingItemId === id) cancelEdit();
   cargoItems = cargoItems.filter(it => it.id !== id);
   packedBoxes = [];
   manualHistory = [];
@@ -1323,7 +1401,7 @@ function renderManifest() {
   const el = document.getElementById('manifest-list');
   if (!cargoItems.length) { el.innerHTML = '<div class="empty-msg">— no cargo added —</div>'; return; }
   el.innerHTML = cargoItems.map(it => `
-    <div class="manifest-item">
+    <div class="manifest-item${editingItemId === it.id ? ' editing' : ''}" onclick="selectItemForEdit(${it.id})">
       <div class="manifest-badge" style="background:${it.color}">
         <span class="manifest-badge-text" style="color:${badgeTextColor(it.color)}">${it.name}</span>
       </div>
@@ -1334,7 +1412,7 @@ function renderManifest() {
         </div>
       </div>
       <div class="manifest-qty">×${it.qty}</div>
-      <div class="manifest-del" onclick="removeItem(${it.id})">✕</div>
+      <div class="manifest-del" onclick="event.stopPropagation();removeItem(${it.id})">✕</div>
     </div>
   `).join('');
 }
@@ -1446,7 +1524,13 @@ function renderManualItemSelect() {
     return `<div class="manual-item-btn${active?' active':''}${depleted?' depleted':''}"
       onclick="${depleted ? '' : `selectManualItem(${it.id})`}">
       <div class="manual-item-dot" style="background:${it.color}"></div>
-      <div class="manual-item-name">${it.name}</div>
+      <div style="flex:1;min-width:0;">
+        <div class="manual-item-name">${it.name}</div>
+        <div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px;">
+          ${it.l}×${it.w}×${it.h}cm &nbsp;·&nbsp; ${it.weight}kg
+          &nbsp;<span style="color:${it.upright?'var(--accent)':'var(--muted)'};">${it.upright?'↑':'⟳'}</span>
+        </div>
+      </div>
       <div class="manual-item-remain">${remain} left</div>
     </div>`;
   }).join('');
@@ -1536,9 +1620,12 @@ function snapToValid(rawX, rawY, ol, ow, oh) {
 }
 
 // Returns the max weight of any box directly supporting the footprint at (x,y,ol,ow,z)
+function getWeightTolerance() {
+  return Math.max(0, parseFloat(document.getElementById('weightTolerance').value) || 0);
+}
+
 function checkWeightStack(x, y, ol, ow, z, newWeight) {
   if (z === 0) return null; // on floor — always OK
-  // Find boxes whose top face is at z (directly below new box) and footprint overlaps
   const supporters = packedBoxes.filter(b =>
     Math.abs((b.z + b.h) - z) < 0.1 &&
     b.x < x+ol-0.01 && b.x+b.l > x+0.01 &&
@@ -1546,8 +1633,9 @@ function checkWeightStack(x, y, ol, ow, z, newWeight) {
   );
   if (!supporters.length) return null;
   const minSupportWeight = Math.min(...supporters.map(b => b.item.weight));
-  if (newWeight > minSupportWeight) return minSupportWeight;
-  return null; // OK
+  const tolerance = getWeightTolerance();
+  if (newWeight > minSupportWeight + tolerance) return minSupportWeight;
+  return null;
 }
 
 function updateGhost() {
@@ -1624,7 +1712,7 @@ function updateGhostFromEvent(e) {
   // Update hint text
   const hint = document.getElementById('manual-hint');
   if (weightViolation) {
-    hint.innerHTML = `<span style="color:var(--red)">⚠ Heavy on light! This box (${manualSelectedItem.weight}kg) would stack on a ${weightViolation}kg box.</span>`;
+    const tol = getWeightTolerance(); hint.innerHTML = `<span style="color:var(--red)">⚠ Weight exceeded! This box (${manualSelectedItem.weight}kg) exceeds lower box (${weightViolation}kg) by more than tolerance (${tol}kg).</span>`;
   } else {
     hint.textContent = 'Hover to preview · Click to place · R to rotate · ESC to deselect';
   }
@@ -1638,7 +1726,7 @@ canvas.addEventListener('click', e => {
   // Block if weight stacking rule violated
   if (!ghostMesh.userData.weightOk) {
     const hint = document.getElementById('manual-hint');
-    hint.innerHTML = `<span style="color:var(--red)">⚠ Cannot place — heavier cargo must not stack on lighter cargo.</span>`;
+    const tol2 = getWeightTolerance(); hint.innerHTML = `<span style="color:var(--red)">⚠ Cannot place — weight difference exceeds tolerance of ${tol2}kg.</span>`;
     return;
   }
 
@@ -1854,16 +1942,24 @@ async function exportPDF() {
     doc.setFillColor(240,242,245); doc.rect(0,PH-8,PW,8,'F');
     doc.setFontSize(7); doc.setTextColor(100,105,120); doc.setFont('helvetica','normal');
     doc.text('Developed by Komsan Kongsuwan  |  komsan.kongsuwan@gmail.com  |  +66-81-723-9680',PW/2,PH-3,{align:'center'});
+    doc.text('Developed by Komsan Kongsuwan  |  komsan.kongsuwan@gmail.com  |  +66-81-723-9680',PW/2,PH-3,{align:'center'});
   }
 
-  doc.save(`loading-plan-${currentCKey}-${Date.now()}.pdf`);
-  btn.textContent='⬇ Export PDF'; btn.disabled=false;
+  doc.save(`container-load-plan-${new Date().toISOString().slice(0,10)}.pdf`);
+  btn.textContent = '⬇ Export PDF'; btn.disabled = false;
 }
 
-updateCamera();
+// ── INIT ──────────────────────────────────────────────────────────────────────
 renderContainerList();
-initScrollbars();
 updateContainerTypeOverlay();
+initScrollbars();
+document.addEventListener('click', e => {
+  const popover = document.getElementById('add-container-popover');
+  const btn = document.getElementById('add-container-btn');
+  if (!popover.contains(e.target) && e.target !== btn) {
+    popover.classList.remove('open');
+  }
+});
 </script>
 </body>
 </html>

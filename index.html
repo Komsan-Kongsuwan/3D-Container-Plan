@@ -504,7 +504,7 @@ html.light #theme-toggle-thumb { left: 17px; }
           </div>
           <div id="dev-overlay">
             <div>Developed by Komsan Kongsuwan</div>
-            <div><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1d7672706e7c73337672737a6e686a7c735d7a707c7471337e7270">[email&#160;protected]</a></div>
+            <div>komsan.kongsuwan@gmail.com</div>
             <div>+66-81-723-9680</div>
           </div>
         </div>
@@ -576,7 +576,7 @@ html.light #theme-toggle-thumb { left: 17px; }
   </div><!-- /#main-row -->
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 const STANDARD_KEYS = new Set(['20ft','40ft','40hc','4w','6w','10w','trailer12m']);
 const CONTAINERS = {
   '20ft':      { label:"20FT Standard",      L:589,  W:235, H:239, maxKg:28180, sideLoad:false },
@@ -1817,6 +1817,10 @@ async function exportPDF() {
     orbit.theta=theta; orbit.phi=phi; orbit.radius=diag*1.3;
     orbit.target.set(0,c.H*0.3,0); updateCamera();
     renderer.render(scene, camera);
+    const img = renderer.domElement.toDataURL('image/jpeg',0.92);
+    orbit.theta=savedT; orbit.phi=savedP; orbit.radius=savedR; orbit.target.copy(savedTgt);
+    updateCamera(); renderer.render(scene,camera);
+    return {img, label};
   }
 
   // Switch to light theme for clean PDF captures

@@ -192,7 +192,7 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg);
 }
 #dev-overlay {
   position: absolute; bottom: 30px; right: 14px;
-  pointer-events: none; text-align: right;
+  pointer-events: all; text-align: right;
   font-family: var(--mono); font-size: 10px;
   color: var(--muted); line-height: 1.7;
   text-shadow: 0 1px 3px rgba(0,0,0,0.5);
@@ -527,7 +527,7 @@ html.light #theme-toggle-thumb { left: 17px; }
           </div>
           <div id="dev-overlay">
             <div>Developed by Komsan Kongsuwan</div>
-            <div>komsan.kongsuwan@gmail.com</div>
+            <div><a href="mailto:komsan.kongsuwan@gmail.com" style="color:inherit;text-decoration:underline;cursor:pointer;">komsan.kongsuwan@gmail.com</a></div>
             <div>+66-81-723-9680</div>
           </div>
         </div>
